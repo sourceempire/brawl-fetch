@@ -1,0 +1,17 @@
+{
+  "name": "brawl-fetch",
+  "version": "1.0.0",
+  "description": "`brawlFetch` is a function that allows you to make HTTP requests, similar to the built-in `fetch` function. However, brawlFetch includes additional functionality to make authorized requests to the server. This includes handling XSRF protection and checking the response status.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Source Empire AB",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^18.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
