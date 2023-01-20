@@ -1,5 +1,17 @@
 # brawl-fetch
 
+## Installation
+
+```bash
+npm install git+git@github.com:sourceempire/brawl-fetch.git#v1.0.0
+```
+
+Note that it might be a good idea to download the latest version
+
+</br >
+
+## Docs
+
 `brawlFetch` is a function that allows you to make HTTP requests, similar to the built-in `fetch` function. However, brawlFetch includes additional functionality to make authorized requests to the server. This includes handling XSRF protection and checking the response status.
 
 The specialized hooks, such as `useDelete` and `useGet`, are designed to make it easier to make specific types of HTTP requests. These hooks are generally preferred over the more general `useFetch` and `useFetchImmediate` hooks, as they eliminate the need to specify the HTTP method each time you make a request.
@@ -8,7 +20,7 @@ The `useFetch` hook serves as the foundation for all of the other fetch-related 
 
 To ensure that your code remains maintainable and easy to understand, it is generally a good idea to avoid adding additional functionality to the specialized hooks (such as `useDelete`, `useGet`, etc.) and instead make any necessary changes directly to the `useFetch` hook. This will ensure that all of the fetch-related hooks behave consistently and that any changes you make will be applied consistently across all of the hooks.
 
-## Hooks
+### Hooks
 
 - `useFetch`: a hook for making any type of HTTP request
 - `useGet`: a hook for making GET requests
@@ -22,13 +34,15 @@ To ensure that your code remains maintainable and easy to understand, it is gene
 - `useFetchImmediate`: a hook for making an HTTP request immediately after rendering
 - `useGetImmediate`: a hook for making a GET request immediately after rendering
 
-## Other files
+### Other files
 
 - `brawlFetch.ts`: the main module for the package
 - `index.ts`: the entry point for the package
 - `types.ts`: type definitions for the package
 
-## Example
+</br>
+
+### Example
 
 Here's an example of how to use the `useFetch` hook to make a GET request to an API:
 
