@@ -25,5 +25,9 @@ module.exports = {
         new webpack.DefinePlugin({
             'NODE_ENV': JSON.stringify("production")
         }),
-    ]
+    ],
+    externals: {
+        react: 'react',
+        reactDOM: 'react-dom'
+    }
 };
