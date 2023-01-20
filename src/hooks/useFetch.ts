@@ -37,7 +37,7 @@ type Action<T> =
       type: Actions.CLEAR_ERROR;
     };
 
-export type State<T = never> = {
+export type State<T = any> = {
   loading: boolean;
   success: boolean;
   error: ServerError | null;
