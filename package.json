@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "author": "Source Empire AB",
   "license": "ISC",
-  "types": "src/index.d.ts",
+  "types": "src/declarations/index.d.ts",
   "scripts": {
     "build": "webpack"
   },
