@@ -46,38 +46,6 @@ export type State<T = any> = {
 
 export type FetchHookReturnType<T = unknown> = [(options?: FetchOptions) => AbortController, State<T> & Methods];
 
-export function useFetch<T>(url: string): FetchHookReturnType<T> {
-  const [state, dispatch] = useReducer<React.Reducer<State<T>, Action<T>>>(fetchReducer, initialState);
-
-  const request = useCallback(
-    (options: FetchOptions = {}) => {
-      const abortController = new AbortController();
-      fetchData<T>(url, { ...options, signal: abortController.signal }, dispatch);
-      return abortController;
-    },
-    [url],
-  );
-
-  const clearError = useCallback(() => {
-    dispatch({ type: Actions.CLEAR_ERROR });
-  }, []);
-
-  return [request, { ...state, clearError, refetch: request }];
-}
-
-async function fetchData<T>(url: string, options: FetchOptions = {}, dispatch: React.Dispatch<Action<T>>) {
-  dispatch({ type: Actions.FETCH_INIT });
-
-  try {
-    const response = await brawlFetch<T>(url, { ...options });
-    dispatch({ type: Actions.FETCH_SUCCESS, payload: response });
-  } catch (e) {
-    const error = e as ServerError;
-    if (error.name === 'AbortError') return;
-    dispatch({ type: Actions.FETCH_FAILURE, payload: error });
-  }
-}
-
 function fetchReducer<T>(state: State<T>, action: Action<T>): State<T> {
   switch (action.type) {
     case Actions.FETCH_INIT:
@@ -111,3 +79,46 @@ function fetchReducer<T>(state: State<T>, action: Action<T>): State<T> {
       throw new Error();
   }
 }
+
+type FetchHookOptions<T> = {
+  onComplete?: (data: T) => void;
+  onError?: (error: unknown) => void;
+}
+
+async function fetchData<T>(url: string, fetchOptions: FetchOptions = {}, options: FetchHookOptions<T>, dispatch: React.Dispatch<Action<T>>) {
+  dispatch({ type: Actions.FETCH_INIT });
+
+  try {
+    const response = await brawlFetch<T>(url, fetchOptions);
+    options.onComplete?.(response)
+    dispatch({ type: Actions.FETCH_SUCCESS, payload: response });
+  } catch (e) {
+    const error = e as ServerError;
+    if (error.name === 'AbortError') return;
+    options.onError?.(error)
+    dispatch({ type: Actions.FETCH_FAILURE, payload: error });
+  }
+}
+
+export function useFetch<T>(url: string, options: FetchHookOptions<T> = {}): FetchHookReturnType<T> {
+  const [state, dispatch] = useReducer<React.Reducer<State<T>, Action<T>>>(fetchReducer, initialState);
+
+  const request = useCallback(
+    (fetchOptions: FetchOptions = {}) => {
+      const abortController = new AbortController();
+      fetchData<T>(url, { ...fetchOptions, signal: abortController.signal }, options, dispatch);
+      return abortController;
+    },
+    [url, options],
+  );
+
+  const clearError = useCallback(() => {
+    dispatch({ type: Actions.CLEAR_ERROR });
+  }, []);
+
+  return [request, { ...state, clearError, refetch: request }];
+}
+
+
+
+

@@ -10,5 +10,9 @@ export type State<T = any> = {
     data: T | null;
 };
 export type FetchHookReturnType<T = unknown> = [(options?: FetchOptions) => AbortController, State<T> & Methods];
-export declare function useFetch<T>(url: string): FetchHookReturnType<T>;
+type FetchHookOptions<T> = {
+    onComplete?: (data: T) => void;
+    onError?: (error: unknown) => void;
+};
+export declare function useFetch<T>(url: string, options?: FetchHookOptions<T>): FetchHookReturnType<T>;
 export {};
