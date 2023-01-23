@@ -1,5 +1,5 @@
-import { FetchOptions } from '../types';
-export declare function useGetImmediate<T>(url: string, options?: Omit<FetchOptions, 'body' | 'method'>): {
+import { FetchOptions } from "../types";
+export declare function useGetImmediate<T>(url: string, fetchOptions?: Omit<FetchOptions, "body" | "method">): {
     loading: boolean;
     success: boolean;
     error: import("../types").ServerError | null;

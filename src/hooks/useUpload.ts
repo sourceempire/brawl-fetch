@@ -1,26 +1,36 @@
-import { type State } from './useFetch';
-import { usePost } from './usePost';
-import { FetchOptions } from '../types';
+import { FetchHookOptions, type State } from "./useFetch";
+import { usePost } from "./usePost";
+import { FetchOptions } from "../types";
+import { useCallback } from "react";
 
-type UploadHookReturnType<T = unknown> = [(blob: Blob, options?: FetchOptions) => AbortController, State<T>];
+type UploadHookReturnType<T = unknown> = [
+  (blob: Blob, options?: FetchOptions) => AbortController,
+  State<T>
+];
 
-export function useUpload<T>(url: string): UploadHookReturnType<T> {
-  const [request, state] = usePost<T>(url);
+export function useUpload<T>(
+  url: string,
+  options: FetchHookOptions<T> = {}
+): UploadHookReturnType<T> {
+  const [request, state] = usePost<T>(url, options);
 
-  function uploadRequest(blob: Blob, options?: FetchOptions) {
-    const formData = new FormData();
-    formData.append('blob', blob);
+  const uploadRequest = useCallback(
+    (blob: Blob, fetchOptions?: FetchOptions) => {
+      const formData = new FormData();
+      formData.append("blob", blob);
 
-    if (options?.body) {
-      formData.append('body', JSON.stringify(options.body));
-    }
+      if (fetchOptions?.body) {
+        formData.append("body", JSON.stringify(fetchOptions.body));
+      }
 
-    const headers = new Headers({
-      'Content-Type': 'multipart/form-data',
-    });
+      const headers = new Headers({
+        "Content-Type": "multipart/form-data",
+      });
 
-    return request({ ...options, headers });
-  }
+      return request({ ...fetchOptions, headers });
+    },
+    []
+  );
 
   return [uploadRequest, state];
 }

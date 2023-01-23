@@ -1,12 +1,18 @@
-import { useFetch, FetchHookReturnType } from './useFetch';
-import { FetchOptions } from '../types';
+import { useFetch, FetchHookReturnType, FetchHookOptions } from "./useFetch";
+import { FetchOptions } from "../types";
+import { useCallback } from "react";
 
-export function usePost<T>(url: string): FetchHookReturnType<T> {
-  const [request, state] = useFetch<T>(url);
+export function usePost<T>(
+  url: string,
+  options: FetchHookOptions<T> = {}
+): FetchHookReturnType<T> {
+  const [request, state] = useFetch<T>(url, options);
 
-  function postRequest(options?: FetchOptions) {
-    return request({ ...options, method: 'POST' });
-  }
+  const postRequest = useCallback(
+    (fetchOptions?: FetchOptions) =>
+      request({ ...fetchOptions, method: "POST" }),
+    [request]
+  );
 
   return [postRequest, state];
 }

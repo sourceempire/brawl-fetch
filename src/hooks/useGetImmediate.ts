@@ -1,6 +1,9 @@
-import { useFetchImmediate } from './useFetchImmediate';
-import { FetchOptions } from '../types';
+import { useFetchImmediate } from "./useFetchImmediate";
+import { FetchOptions } from "../types";
 
-export function useGetImmediate<T>(url: string, options?: Omit<FetchOptions, 'body' | 'method'>) {
-  return useFetchImmediate<T>(url, { ...options, method: 'GET' });
+export function useGetImmediate<T>(
+  url: string,
+  fetchOptions?: Omit<FetchOptions, "body" | "method">
+) {
+  return useFetchImmediate<T>(url, { ...fetchOptions, method: "GET" });
 }

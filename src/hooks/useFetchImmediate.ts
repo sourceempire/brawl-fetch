@@ -1,19 +1,20 @@
-import { useEffect } from 'react';
-import { FetchOptions } from '../types';
-import { useFetch } from './useFetch';
+import { useEffect } from "react";
+import { FetchOptions } from "../types";
+import { useFetch } from "./useFetch";
 
-export function useFetchImmediate<T>(url: string, options: FetchOptions = {}) {
+export function useFetchImmediate<T>(
+  url: string,
+  fetchOptions: FetchOptions = {}
+) {
   const [lazyFetchData, state] = useFetch<T>(url);
 
   useEffect(() => {
-    const abortController = lazyFetchData(options);
+    const abortController = lazyFetchData(fetchOptions);
 
     return () => {
       abortController.abort();
     };
-    // TODO -> How do we fill this dependency array?
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [url]);
+  }, [lazyFetchData]);
 
   return { ...state };
 }

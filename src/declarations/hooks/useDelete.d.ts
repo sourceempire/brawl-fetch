@@ -1,2 +1,2 @@
-import { FetchHookReturnType } from './useFetch';
-export declare function useDelete<T>(url: string): FetchHookReturnType<T>;
+import { FetchHookReturnType, FetchHookOptions } from "./useFetch";
+export declare function useDelete<T>(url: string, options?: FetchHookOptions<T>): FetchHookReturnType<T>;
