@@ -1,0 +1,58 @@
+env:
+  browser: true
+  es2021: true
+  jest: true
+extends:
+  - eslint:recommended
+  - plugin:import/warnings
+  - plugin:react/recommended
+  - plugin:react-hooks/recommended
+  - plugin:@typescript-eslint/recommended
+  - plugin:prettier/recommended
+parser: '@typescript-eslint/parser'
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: latest
+  sourceType: module
+plugins:
+  - react
+  - react-hooks
+  - '@typescript-eslint'
+  - import
+rules:
+  react/react-in-jsx-scope: off
+  react-hooks/rules-of-hooks: error
+  react-hooks/exhaustive-deps: warn
+  '@typescript-eslint/no-empty-interface': warn
+  '@typescript-eslint/no-empty-function': warn
+  sort-imports:
+    - error
+    - ignoreCase: false
+      ignoreDeclarationSort: true
+      ignoreMemberSort: false
+      memberSyntaxSortOrder:
+        - none
+        - all
+        - single
+        - multiple
+  import/order:
+    - error
+    - groups:
+        - builtin
+        - external
+        - internal
+        - parent
+        - sibling
+        - index
+      pathGroups:
+        - pattern: react
+          group: external
+          position: before
+      alphabetize:
+        order: asc
+        caseInsensitive: true
+settings:
+  react:
+    version: detect
+    

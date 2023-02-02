@@ -1,5 +1,5 @@
-import { FetchOptions } from '../types';
-import { FetchHookOptions, type State } from './useFetch';
+import { FetchOptions } from '../../types';
+import { FetchHookOptions, type State } from '../useFetch';
 type UploadHookReturnType<T = unknown> = [
     (blob: Blob, options?: FetchOptions) => AbortController,
     State<T>

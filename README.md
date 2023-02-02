@@ -153,3 +153,53 @@ function MyComponent() {
   );
 }
 ```
+
+</br>
+
+## Using `brawl-fetch` in a Local Environment with `npm link`
+
+1. Clone the `brawl-fetch` project to your local machine.
+2. Navigate to the `brawl-fetch` directory.
+3. Run the `link` script defined in the `package.json` file:
+
+    ```bash
+    npm run link
+    ```
+
+    This script will first run the `build` script (`webpack`) to build the project, and then run `npm link` to link the project globally. The `npm link` command creates a symbolic link between the local project and the global environment, allowing the project to be used as a globally linked package.
+
+4. Check that the `brawl-fetch` project has been linked globally by running the following command:
+
+    ```bash
+    npm ls -g --depth=0
+    ```
+
+    You should see `brawl-fetch` listed in the output of the command, indicating that the project has been linked globally.
+
+5. In another project where you want to use the `brawl-fetch` package, run the following command:
+
+    ```bash
+    npm link brawl-fetch
+    ```
+
+    This will link the `brawl-fetch` project in the current project, allowing you to use the `brawl-fetch` package in the current project as if it were installed from npm registry.
+
+6. To unlink the `brawl-fetch` project from the current project, run the following command:
+
+    ```bash
+    npm unlink brawl-fetch
+    ```
+
+    This will remove the symbolic link between the `brawl-fetch` project and the current project.
+
+7. To unlink the brawl-fetch project globally, run the following command in the brawl-fetch directory:
+
+    ```bash
+    npm run unlink
+    ```
+
+    This script runs the `npm unlink -g brawl-fetch` command, which removes the global symbolic link of the brawl-fetch project, effectively uninstalling it from the global environment.
+
+## Versioning
+
+Add explanation on how to update this package.
