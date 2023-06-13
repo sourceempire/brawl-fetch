@@ -9,7 +9,7 @@ type UploadHookReturnType<T = unknown> = [
 
 export function useUpload<T>(
   url: string,
-  options: FetchHookOptions<T> = {}
+  options: Omit<FetchHookOptions<T>, 'headers'> = {}
 ): UploadHookReturnType<T> {
   const [request, state] = useFetch<T>(url, options);
 
@@ -21,6 +21,8 @@ export function useUpload<T>(
       if (fetchOptions?.body) {
         formData.append('body', JSON.stringify(fetchOptions.body));
       }
+
+      formData.forEach((a) => console.log(a.toString()));
 
       global.console.log(
         JSON.stringify(

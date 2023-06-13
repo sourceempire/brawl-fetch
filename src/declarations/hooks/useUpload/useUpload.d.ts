@@ -4,5 +4,5 @@ type UploadHookReturnType<T = unknown> = [
     (blob: Blob, options?: FetchOptions) => AbortController,
     State<T>
 ];
-export declare function useUpload<T>(url: string, options?: FetchHookOptions<T>): UploadHookReturnType<T>;
+export declare function useUpload<T>(url: string, options?: Omit<FetchHookOptions<T>, 'headers'>): UploadHookReturnType<T>;
 export {};
