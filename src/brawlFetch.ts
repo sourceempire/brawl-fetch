@@ -52,6 +52,8 @@ export async function brawlFetch<TResponseData>(
   const searchParams = createSerarchParams(params);
   const finalUrl = `${url}?${searchParams}`;
 
+  const isFormData = body instanceof FormData;
+
   const response = await fetch(finalUrl, {
     method,
     signal,
@@ -61,7 +63,7 @@ export async function brawlFetch<TResponseData>(
       ...headers
     },
     ...(body && {
-      body: JSON.stringify(body)
+      body: isFormData ? body : JSON.stringify(body)
     })
   });
 
