@@ -27,7 +27,7 @@ export function useUpload<T>(
       //   'Content-Type': 'multipart/form-data'
       // });
 
-      return request({ ...fetchOptions });
+      return request({ ...fetchOptions, body: formData });
     },
     [request]
   );
