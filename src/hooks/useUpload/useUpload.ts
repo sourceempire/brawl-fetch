@@ -1,7 +1,6 @@
 import { useCallback } from 'react';
 import { FetchOptions } from '../../types';
-import { FetchHookOptions, type State } from '../useFetch';
-import { usePost } from '../usePost/usePost';
+import { FetchHookOptions, type State, useFetch } from '../useFetch';
 
 type UploadHookReturnType<T = unknown> = [
   (blob: Blob, options?: FetchOptions) => AbortController,
@@ -12,7 +11,7 @@ export function useUpload<T>(
   url: string,
   options: FetchHookOptions<T> = {}
 ): UploadHookReturnType<T> {
-  const [request, state] = usePost<T>(url, options);
+  const [request, state] = useFetch<T>(url, options);
 
   const uploadRequest = useCallback(
     (blob: Blob, fetchOptions?: FetchOptions) => {
@@ -26,6 +25,7 @@ export function useUpload<T>(
       global.console.log(
         JSON.stringify(
           {
+            method: 'POST',
             headers: {
               ...fetchOptions?.headers,
               ...new Headers({ 'Content-Type': 'multipart/form-data' })
@@ -40,6 +40,7 @@ export function useUpload<T>(
       );
 
       return request({
+        method: 'POST',
         headers: {
           ...fetchOptions?.headers,
           ...new Headers({ 'Content-Type': 'multipart/form-data' })
