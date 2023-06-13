@@ -1,6 +1,6 @@
 {
   "name": "brawl-fetch",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "`brawlFetch` is a function that allows you to make HTTP requests, similar to the built-in `fetch` function. However, brawlFetch includes additional functionality to make authorized requests to the server. This includes handling XSRF protection and checking the response status.",
   "main": "dist/bundle.js",
   "author": "Source Empire AB",
