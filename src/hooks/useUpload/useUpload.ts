@@ -23,8 +23,23 @@ export function useUpload<T>(
         formData.append('body', JSON.stringify(fetchOptions.body));
       }
 
+      global.console.log(
+        JSON.stringify(
+          {
+            headers: {
+              ...fetchOptions?.headers,
+              ...new Headers({ 'Content-Type': 'multipart/form-data' })
+            },
+            signal: fetchOptions?.signal,
+            params: fetchOptions?.params,
+            body: formData
+          },
+          null,
+          2
+        )
+      );
+
       return request({
-        method: 'POST',
         headers: {
           ...fetchOptions?.headers,
           ...new Headers({ 'Content-Type': 'multipart/form-data' })
