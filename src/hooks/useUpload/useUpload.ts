@@ -26,10 +26,6 @@ export function useUpload<T>(
         JSON.stringify(
           {
             method: 'POST',
-            headers: {
-              ...fetchOptions?.headers,
-              ...new Headers({ 'Content-Type': 'multipart/form-data' })
-            },
             signal: fetchOptions?.signal,
             params: fetchOptions?.params,
             body: formData
@@ -41,10 +37,6 @@ export function useUpload<T>(
 
       return request({
         method: 'POST',
-        headers: {
-          ...fetchOptions?.headers,
-          ...new Headers({ 'Content-Type': 'multipart/form-data' })
-        },
         signal: fetchOptions?.signal,
         params: fetchOptions?.params,
         body: formData
