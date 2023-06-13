@@ -23,11 +23,11 @@ export function useUpload<T>(
         formData.append('body', JSON.stringify(fetchOptions.body));
       }
 
-      const headers = new Headers({
-        'Content-Type': 'multipart/form-data'
-      });
+      // const headers = new Headers({
+      //   'Content-Type': 'multipart/form-data'
+      // });
 
-      return request({ ...fetchOptions, headers });
+      return request({ ...fetchOptions });
     },
     [request]
   );
