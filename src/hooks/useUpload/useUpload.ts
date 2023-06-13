@@ -24,8 +24,8 @@ export function useUpload<T>(
       }
 
       return request({
+        method: 'POST',
         headers: fetchOptions?.headers,
-        method: fetchOptions?.method,
         signal: fetchOptions?.signal,
         params: fetchOptions?.params,
         body: formData
