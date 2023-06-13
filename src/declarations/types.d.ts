@@ -5,7 +5,7 @@ export type FetchOptions = {
     method?: HTTPMethod;
     headers?: Headers;
     params?: FetchParams;
-    body?: FetchBody;
+    body?: FetchBody | FormData;
     signal?: AbortSignal;
 };
 export type ServerResponse<T> = {

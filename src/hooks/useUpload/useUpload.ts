@@ -23,13 +23,13 @@ export function useUpload<T>(
         formData.append('body', JSON.stringify(fetchOptions.body));
       }
 
-      delete fetchOptions?.body;
-
-      const headers = new Headers({
-        'Content-Type': 'multipart/form-data'
+      return request({
+        headers: fetchOptions?.headers,
+        method: fetchOptions?.method,
+        signal: fetchOptions?.signal,
+        params: fetchOptions?.params,
+        body: formData
       });
-
-      return request({ ...fetchOptions, headers, body: formData });
     },
     [request]
   );

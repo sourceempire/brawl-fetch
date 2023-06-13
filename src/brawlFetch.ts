@@ -10,9 +10,7 @@ function createSerarchParams(params: Record<string, string | number | boolean>):
 }
 
 function getDefaultHeaders() {
-  const headers: Record<string, string> = {
-    'Content-Type': 'application/json'
-  };
+  const headers: Record<string, string> = {};
 
   const token = localStorage.getItem('XSRF-TOKEN');
   if (token) {
