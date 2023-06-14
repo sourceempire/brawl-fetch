@@ -9,12 +9,16 @@ function createSerarchParams(params: Record<string, string | number | boolean>):
   );
 }
 
-function getDefaultHeaders() {
+function getDefaultHeaders(isFormData: boolean) {
   const headers: Record<string, string> = {};
 
   const token = localStorage.getItem('XSRF-TOKEN');
   if (token) {
     headers['X-XSRF-TOKEN'] = token;
+  }
+
+  if (!isFormData) {
+    headers['Content-Type'] = 'application/json';
   }
 
   return headers;
@@ -59,7 +63,7 @@ export async function brawlFetch<TResponseData>(
     signal,
     credentials: 'include',
     headers: {
-      ...getDefaultHeaders(),
+      ...getDefaultHeaders(isFormData),
       ...headers
     },
     ...(body && {
