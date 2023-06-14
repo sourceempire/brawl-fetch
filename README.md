@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npm install git+git@github.com:sourceempire/brawl-fetch.git#v1.1.0
+npm install git+git@github.com:sourceempire/brawl-fetch.git#v1.1.1
 ```
 
 Note that it might be a good idea to download the latest version
@@ -202,4 +202,36 @@ function MyComponent() {
 
 ## Versioning
 
-Add explanation on how to update this package.
+To update this package, follow the steps below:
+
+1. When satisfied with the code, start by running
+
+    ```bash
+    npm run build
+    ```
+
+2. Commit and push the changes.
+
+3. We need to create a new tag, choose release type `(patch, minor, major)` wisely, run:
+
+    ```bash
+    npm version <release_type>
+    ```
+
+    *Remember to update the Reademe's installation with the new version*
+
+4. The new tag should be shown, it´s time to push that tag, run:
+
+    ```bash
+    git push --tags
+    ```
+
+5. Now go to the repository and click on `Tags`.
+
+6. Clcik on the tag that you just created, it should be at the top of the list.
+
+7. Now click on `Create release from tag`.
+
+8. Enter a **Release title** and a description to describe whats new in the release.
+
+9. Done! Now it is possible to install the new version in our other projects.
