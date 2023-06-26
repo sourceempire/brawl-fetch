@@ -3,9 +3,11 @@ import { FetchOptions, ServerResponse } from './types';
 function createSerarchParams(params: Record<string, string | number | boolean>): URLSearchParams {
   return new URLSearchParams(
     // Convert the params object into an object with string values only
-    Object.entries(params).reduce((acc, [key, value]) => {
-      return { ...acc, [key]: value.toString() };
-    }, {} as Record<string, string>)
+    Object.entries(params)
+      .filter(([, value]) => value !== undefined && value !== null)
+      .reduce((acc, [key, value]) => {
+        return { ...acc, [key]: value.toString() };
+      }, {})
   );
 }
 
