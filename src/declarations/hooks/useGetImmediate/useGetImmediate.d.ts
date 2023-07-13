@@ -1,6 +1,6 @@
 import { FetchHookOptions } from 'hooks/useFetch';
-import { FetchOptions } from '../../types';
-export declare function useGetImmediate<T>(url: string, fetchOptions?: Omit<FetchOptions, 'body' | 'method'>, options?: FetchHookOptions<T>): {
+import { FetchBody, FetchOptions, FetchParams } from '../../types';
+export declare function useGetImmediate<T, U = FetchParams>(url: string, fetchOptions?: Omit<FetchOptions<U, FetchBody>, 'body' | 'method'>, options?: FetchHookOptions<T>): {
     loading: boolean;
     success: boolean;
     error: import("../../types").ServerError | null;
