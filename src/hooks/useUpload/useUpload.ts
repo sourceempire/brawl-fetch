@@ -1,20 +1,20 @@
 import { useCallback } from 'react';
-import { FetchOptions } from '../../types';
-import { FetchHookOptions, type State, useFetch } from '../useFetch';
+import { FetchBody, FetchOptions, FetchParams } from '../../types';
+import { FetchHookOptions, State, useFetch } from '../useFetch';
 
-type UploadHookReturnType<T = unknown> = [
-  (blob: Blob, options?: FetchOptions) => AbortController,
+type UploadHookReturnType<T = unknown, U = FetchParams, V = FetchBody> = [
+  (blob: Blob, options?: FetchOptions<U, V>) => AbortController,
   State<T>
 ];
 
-export function useUpload<T, V>(
+export function useUpload<T, U = FetchParams, V = FetchBody>(
   url: string,
   options: Omit<FetchHookOptions<T>, 'headers' | 'method'> = {}
-): UploadHookReturnType<T> {
-  const [request, state] = useFetch<T, V>(url, options);
+): UploadHookReturnType<T, U, V> {
+  const [request, state] = useFetch<T, U, V>(url, options);
 
   const uploadRequest = useCallback(
-    (blob: Blob, fetchOptions?: FetchOptions) => {
+    (blob: Blob, fetchOptions?: FetchOptions<U, V>) => {
       const formData = new FormData();
       formData.append('blob', blob);
 

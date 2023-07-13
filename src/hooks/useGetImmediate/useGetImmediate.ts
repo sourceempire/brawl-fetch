@@ -1,11 +1,11 @@
 import { FetchHookOptions } from 'hooks/useFetch';
-import { FetchOptions } from '../../types';
+import { FetchBody, FetchOptions, FetchParams } from '../../types';
 import { useFetchImmediate } from '../useFetchImmediate';
 
-export function useGetImmediate<T>(
+export function useGetImmediate<T, U = FetchParams>(
   url: string,
-  fetchOptions?: Omit<FetchOptions, 'body' | 'method'>,
+  fetchOptions?: Omit<FetchOptions<U, FetchBody>, 'body' | 'method'>,
   options?: FetchHookOptions<T>
 ) {
-  return useFetchImmediate<T>(url, { ...fetchOptions, method: 'GET' }, options);
+  return useFetchImmediate<T, U>(url, { ...fetchOptions, method: 'GET' }, options);
 }

@@ -1,15 +1,20 @@
 import { useEffect, useRef } from 'react';
-import { FetchOptions } from '../../types';
+import { FetchBody, FetchOptions, FetchParams } from '../../types';
 import { FetchHookOptions, useFetch } from '../useFetch';
 
-export function useFetchImmediate<T>(
+export function useFetchImmediate<T, U = FetchParams, V = FetchBody>(
   url: string,
-  fetchOptions: FetchOptions = {},
+  fetchOptions: FetchOptions<U, V> = {},
   options: FetchHookOptions<T> = {}
 ) {
   const fetchOptionsRef = useRef(fetchOptions);
 
-  const [lazyFetchData, state] = useFetch<T>(url, options);
+  const [lazyFetchData, state] = useFetch<T, U, V>(url, options);
+
+  // Update fetchOptionsRef whenever fetchOptions changes
+  useEffect(() => {
+    fetchOptionsRef.current = fetchOptions;
+  }, [fetchOptions]);
 
   useEffect(() => {
     const abortController = lazyFetchData(fetchOptionsRef.current);

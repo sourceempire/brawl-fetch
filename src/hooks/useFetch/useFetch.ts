@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { brawlFetch } from '../../brawlFetch';
-import { FetchBody, FetchOptions, ServerError } from '../../types';
+import { FetchBody, FetchOptions, FetchParams, ServerError } from '../../types';
 import { Action, Actions, FetchHookOptions, FetchHookReturnType, State } from './useFetch.types';
 
 const initialState: State<unknown> = {
@@ -66,10 +66,10 @@ function handleError(
   options?.onError?.(error);
 }
 
-export function useFetch<T, V = FetchBody>(
+export function useFetch<T, U = FetchParams, V = FetchBody>(
   url: string,
   options: FetchHookOptions<T> = {}
-): FetchHookReturnType<T, V> {
+): FetchHookReturnType<T, U, V> {
   const [state, dispatch] = useReducer<React.Reducer<State<T>, Action<T>>>(
     fetchReducer,
     initialState as State<T>
@@ -84,7 +84,7 @@ export function useFetch<T, V = FetchBody>(
     optionsRef.current = options;
   }, [url, options]);
 
-  const request = useCallback((fetchOptions: FetchOptions<V> = {}) => {
+  const request = useCallback((fetchOptions: FetchOptions<U, V> = {}) => {
     const abortController = new AbortController();
 
     const options = {
@@ -94,7 +94,7 @@ export function useFetch<T, V = FetchBody>(
 
     dispatch({ type: Actions.FETCH_INIT });
 
-    brawlFetch<T, V>(requestUrl.current, options)
+    brawlFetch<T, U, V>(requestUrl.current, options)
       .then((res) => handleComplete(res, optionsRef.current, dispatch))
       .catch((err) => handleError(err, optionsRef.current, dispatch));
 
