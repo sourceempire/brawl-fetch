@@ -2,11 +2,11 @@ export type FetchParams = Record<string, string | number | boolean>;
 export type FetchBody = Record<string, unknown>;
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type FetchOptions = {
+export type FetchOptions<V = FetchBody> = {
   method?: HTTPMethod;
   headers?: Headers;
   params?: FetchParams;
-  body?: FetchBody | FormData;
+  body?: V | FormData;
   signal?: AbortSignal;
 };
 

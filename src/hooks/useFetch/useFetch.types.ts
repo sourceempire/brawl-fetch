@@ -1,4 +1,4 @@
-import { FetchOptions, ServerError } from 'types';
+import { FetchBody, FetchOptions, ServerError } from 'types';
 
 export type FetchHookOptions<T> = {
   onComplete?: (data: T) => void;
@@ -39,7 +39,7 @@ export type State<T> = {
   data: T | null;
 };
 
-export type FetchHookReturnType<T = unknown> = [
-  (options?: FetchOptions) => AbortController,
+export type FetchHookReturnType<T = unknown, V = FetchBody> = [
+  (options?: FetchOptions<V>) => AbortController,
   State<T> & Methods
 ];

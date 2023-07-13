@@ -1,4 +1,4 @@
-import { FetchOptions, ServerResponse } from './types';
+import { FetchBody, FetchOptions, ServerResponse } from './types';
 
 function createSerarchParams(params: Record<string, string | number | boolean>): URLSearchParams {
   return new URLSearchParams(
@@ -49,9 +49,9 @@ async function checkStatus<TResponseData>(res: Response) {
   }
 }
 
-export async function brawlFetch<TResponseData>(
+export async function brawlFetch<TResponseData, V>(
   url: string,
-  options: FetchOptions = {}
+  options: FetchOptions<V> = {}
 ): Promise<TResponseData> {
   const { method = 'GET', headers = {}, params = {}, body, signal } = options;
 

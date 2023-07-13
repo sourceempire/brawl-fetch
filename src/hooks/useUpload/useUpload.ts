@@ -7,11 +7,11 @@ type UploadHookReturnType<T = unknown> = [
   State<T>
 ];
 
-export function useUpload<T>(
+export function useUpload<T, V>(
   url: string,
   options: Omit<FetchHookOptions<T>, 'headers' | 'method'> = {}
 ): UploadHookReturnType<T> {
-  const [request, state] = useFetch<T>(url, options);
+  const [request, state] = useFetch<T, V>(url, options);
 
   const uploadRequest = useCallback(
     (blob: Blob, fetchOptions?: FetchOptions) => {
