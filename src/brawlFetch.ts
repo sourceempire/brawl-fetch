@@ -1,4 +1,4 @@
-import { FetchBody, FetchOptions, ServerResponse } from './types';
+import { FetchOptions, ServerResponse } from './types';
 
 function createSerarchParams(params: Record<string, string | number | boolean>): URLSearchParams {
   return new URLSearchParams(

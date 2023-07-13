@@ -61,11 +61,9 @@ function handleError(
   dispatch: React.Dispatch<Action<never>>
 ) {
   if (error?.name === 'AbortError') return;
+
   dispatch({ type: Actions.FETCH_FAILURE, payload: error });
-
-  const { onError } = options;
-
-  onError?.(error);
+  options?.onError?.(error);
 }
 
 export function useFetch<T, V = FetchBody>(
