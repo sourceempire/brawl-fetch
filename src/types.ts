@@ -1,12 +1,17 @@
-export type FetchParams = Record<string, string | number | boolean>;
 export type FetchBody = Record<string, unknown>;
+export type FetchParamValue = string | number | boolean;
+
+export type FetchParams<T = Record<string, FetchParamValue>> = {
+  [K in keyof T]: FetchParamValue;
+};
+
 export type HTTPMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
-export type FetchOptions = {
+export type FetchOptions<U = FetchParams, V = FetchBody> = {
   method?: HTTPMethod;
   headers?: Headers;
-  params?: FetchParams;
-  body?: FetchBody | FormData;
+  params?: U;
+  body?: V | FormData;
   signal?: AbortSignal;
 };
 

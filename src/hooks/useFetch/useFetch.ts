@@ -1,6 +1,6 @@
-import React, { useCallback, useReducer, useRef } from 'react';
+import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { brawlFetch } from '../../brawlFetch';
-import { FetchOptions, ServerError } from '../../types';
+import { FetchBody, FetchOptions, FetchParams, ServerError } from '../../types';
 import { Action, Actions, FetchHookOptions, FetchHookReturnType, State } from './useFetch.types';
 
 const initialState: State<unknown> = {
@@ -61,17 +61,15 @@ function handleError(
   dispatch: React.Dispatch<Action<never>>
 ) {
   if (error?.name === 'AbortError') return;
+
   dispatch({ type: Actions.FETCH_FAILURE, payload: error });
-
-  const { onError } = options;
-
-  onError?.(error);
+  options?.onError?.(error);
 }
 
-export function useFetch<T>(
+export function useFetch<T, U = FetchParams, V = FetchBody>(
   url: string,
   options: FetchHookOptions<T> = {}
-): FetchHookReturnType<T> {
+): FetchHookReturnType<T, U, V> {
   const [state, dispatch] = useReducer<React.Reducer<State<T>, Action<T>>>(
     fetchReducer,
     initialState as State<T>
@@ -80,7 +78,13 @@ export function useFetch<T>(
   const requestUrl = useRef(url);
   const optionsRef = useRef(options);
 
-  const request = useCallback((fetchOptions: FetchOptions = {}) => {
+  // Update refs whenever url or options change
+  useEffect(() => {
+    requestUrl.current = url;
+    optionsRef.current = options;
+  }, [url, options]);
+
+  const request = useCallback((fetchOptions: FetchOptions<U, V> = {}) => {
     const abortController = new AbortController();
 
     const options = {
@@ -90,7 +94,7 @@ export function useFetch<T>(
 
     dispatch({ type: Actions.FETCH_INIT });
 
-    brawlFetch<T>(requestUrl.current, options)
+    brawlFetch<T, U, V>(requestUrl.current, options)
       .then((res) => handleComplete(res, optionsRef.current, dispatch))
       .catch((err) => handleError(err, optionsRef.current, dispatch));
 

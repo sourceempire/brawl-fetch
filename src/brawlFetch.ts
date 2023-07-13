@@ -1,6 +1,6 @@
-import { FetchOptions, ServerResponse } from './types';
+import { FetchBody, FetchOptions, FetchParams, ServerResponse } from './types';
 
-function createSerarchParams(params: Record<string, string | number | boolean>): URLSearchParams {
+function createSearchParams(params: Record<string, string | number | boolean>): URLSearchParams {
   return new URLSearchParams(
     // Convert the params object into an object with string values only
     Object.entries(params)
@@ -49,13 +49,13 @@ async function checkStatus<TResponseData>(res: Response) {
   }
 }
 
-export async function brawlFetch<TResponseData>(
+export async function brawlFetch<TResponseData, U = FetchParams, V = FetchBody>(
   url: string,
-  options: FetchOptions = {}
+  options: FetchOptions<U, V> = {}
 ): Promise<TResponseData> {
   const { method = 'GET', headers = {}, params = {}, body, signal } = options;
 
-  const searchParams = createSerarchParams(params);
+  const searchParams = createSearchParams(params || {});
   const finalUrl = `${url}?${searchParams}`;
 
   const isFormData = body instanceof FormData;

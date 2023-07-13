@@ -1,12 +1,15 @@
 import { useCallback } from 'react';
-import { FetchOptions } from '../../types';
+import { FetchOptions, FetchParams } from '../../types';
 import { FetchHookOptions, FetchHookReturnType, useFetch } from '../useFetch';
 
-export function useGet<T>(url: string, options: FetchHookOptions<T> = {}): FetchHookReturnType<T> {
-  const [request, state] = useFetch<T>(url, options);
+export function useGet<T, U = FetchParams>(
+  url: string,
+  options: FetchHookOptions<T> = {}
+): FetchHookReturnType<T, U> {
+  const [request, state] = useFetch<T, U>(url, options);
 
   const getRequest = useCallback(
-    (fetchOptions?: Omit<FetchOptions, 'body'>) => {
+    (fetchOptions?: Omit<FetchOptions<U>, 'body'>) => {
       return request({ ...fetchOptions, method: 'GET' });
     },
     [request]

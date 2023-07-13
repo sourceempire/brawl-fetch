@@ -1,15 +1,16 @@
 import { useCallback } from 'react';
-import { FetchOptions } from '../../types';
+import { FetchOptions, FetchParams } from '../../types';
 import { FetchHookOptions, FetchHookReturnType, useFetch } from '../useFetch';
 
-export function useDelete<T>(
+export function useDelete<T, U = FetchParams>(
   url: string,
   options: FetchHookOptions<T> = {}
-): FetchHookReturnType<T> {
-  const [request, state] = useFetch<T>(url, options);
+): FetchHookReturnType<T, U> {
+  const [request, state] = useFetch<T, U>(url, options);
 
   const deleteRequest = useCallback(
-    (fetchOptions?: Omit<FetchOptions, 'body'>) => request({ ...fetchOptions, method: 'DELETE' }),
+    (fetchOptions?: Omit<FetchOptions<U>, 'body'>) =>
+      request({ ...fetchOptions, method: 'DELETE' }),
     [request]
   );
 
