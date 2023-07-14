@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { FetchBody, FetchOptions, FetchParams } from '../../types';
-import { FetchHookOptions, useFetch } from '../useFetch';
+import { FetchBody, FetchHookOptions, FetchOptions, FetchParams } from '../../types';
+import { useFetch } from '../useFetch';
 
 export function useFetchImmediate<T, U = FetchParams, V = FetchBody>(
   url: string,

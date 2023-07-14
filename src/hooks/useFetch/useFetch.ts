@@ -1,7 +1,16 @@
 import React, { useCallback, useEffect, useReducer, useRef } from 'react';
 import { brawlFetch } from '../../brawlFetch';
-import { FetchBody, FetchOptions, FetchParams, ServerError } from '../../types';
-import { Action, Actions, FetchHookOptions, FetchHookReturnType, State } from './useFetch.types';
+import {
+  Action,
+  Actions,
+  FetchBody,
+  FetchHookOptions,
+  FetchHookReturnType,
+  FetchOptions,
+  FetchParams,
+  ServerError,
+  State
+} from '../../types';
 
 const initialState: State<unknown> = {
   loading: false,

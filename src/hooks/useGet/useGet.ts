@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { FetchOptions, FetchParams } from '../../types';
-import { FetchHookOptions, FetchHookReturnType, useFetch } from '../useFetch';
+import { FetchHookOptions, FetchHookReturnType, FetchOptions, FetchParams } from '../../types';
+import { useFetch } from '../useFetch';
 
 export function useGet<T, U = FetchParams>(
   url: string,

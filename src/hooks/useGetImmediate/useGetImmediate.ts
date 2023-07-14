@@ -1,5 +1,4 @@
-import { FetchHookOptions } from 'hooks/useFetch';
-import { FetchBody, FetchOptions, FetchParams } from '../../types';
+import { FetchBody, FetchHookOptions, FetchOptions, FetchParams } from '../../types';
 import { useFetchImmediate } from '../useFetchImmediate';
 
 export function useGetImmediate<T, U = FetchParams>(

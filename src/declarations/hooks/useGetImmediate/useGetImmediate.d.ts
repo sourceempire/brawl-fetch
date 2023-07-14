@@ -1,5 +1,4 @@
-import { FetchHookOptions } from 'hooks/useFetch';
-import { FetchBody, FetchOptions, FetchParams } from '../../types';
+import { FetchBody, FetchHookOptions, FetchOptions, FetchParams } from '../../types';
 export declare function useGetImmediate<T, U = FetchParams>(url: string, fetchOptions?: Omit<FetchOptions<U, FetchBody>, 'body' | 'method'>, options?: FetchHookOptions<T>): {
     loading: boolean;
     success: boolean;

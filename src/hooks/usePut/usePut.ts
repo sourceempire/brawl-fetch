@@ -1,6 +1,12 @@
 import { useCallback } from 'react';
-import { FetchBody, FetchOptions, FetchParams } from '../../types';
-import { FetchHookOptions, FetchHookReturnType, useFetch } from '../useFetch';
+import {
+  FetchBody,
+  FetchHookOptions,
+  FetchHookReturnType,
+  FetchOptions,
+  FetchParams
+} from '../../types';
+import { useFetch } from '../useFetch';
 
 export function usePut<T, V = FetchBody, U = FetchParams>(
   url: string,
