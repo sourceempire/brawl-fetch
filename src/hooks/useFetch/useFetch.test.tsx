@@ -86,8 +86,12 @@ describe('useFetch', () => {
   });
 
   test('onError callback on reject', async () => {
-    const expectedError = new Error('test-error');
-    brawlFetchSpy.mockReturnValue(Promise.reject(expectedError));
+    const expectedError = {
+      errorCode: 'UNCAUGHT_ERROR',
+      message: 'Uncaught error in useFetch'
+    };
+
+    brawlFetchSpy.mockReturnValue(Promise.reject(new Error('test-error')));
 
     const onError = jest.fn();
     const { result } = renderHook(() => useFetch('https://example.com', { onError }));
@@ -105,8 +109,12 @@ describe('useFetch', () => {
   });
 
   test('clearError should make error null', async () => {
-    const expectedError = new Error('test-error');
-    brawlFetchSpy.mockReturnValue(Promise.reject(expectedError));
+    const expectedError = {
+      errorCode: 'UNCAUGHT_ERROR',
+      message: 'Uncaught error in useFetch'
+    };
+
+    brawlFetchSpy.mockReturnValue(Promise.reject(new Error('test-error')));
 
     const { result } = renderHook(() => useFetch('https://example.com'));
 
