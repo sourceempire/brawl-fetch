@@ -14,14 +14,9 @@ export type FetchOptions<U = FetchParams, V = FetchBody> = {
 export type ServerResponse<T> = {
     succeeded?: boolean;
 } & T;
-export type ServerError = {
-    status: number;
-    statusText: string;
-    error: string;
-} & Record<string, unknown>;
 export type FetchHookOptions<T> = {
     onComplete?: (data: T) => void;
-    onError?: (error: ServerError) => void;
+    onError?: (error: ErrorResponse) => void;
 };
 export declare enum Actions {
     FETCH_INIT = 0,
@@ -39,17 +34,27 @@ export type Action<T> = {
     payload: T;
 } | {
     type: Actions.FETCH_FAILURE;
-    payload: ServerError;
+    payload: ErrorResponse;
 } | {
     type: Actions.CLEAR_ERROR;
 };
 export type State<T> = {
     loading: boolean;
     success: boolean;
-    error: ServerError | null;
+    error: ErrorResponse | null;
     data: T | null;
 };
 export type FetchHookReturnType<T = unknown, U = FetchParams, V = FetchBody> = [
     (options?: FetchOptions<U, V>) => AbortController,
     State<T> & Methods
 ];
+export type ErrorResponse = {
+    errorCode: string;
+    message: string;
+};
+export type AbortError = {
+    name: 'AbortError';
+};
+export type FetchError = ErrorResponse | AbortError | unknown;
+export declare function isErrorResponse(error: unknown): error is ErrorResponse;
+export declare function isAbortError(error: unknown): error is AbortError;
