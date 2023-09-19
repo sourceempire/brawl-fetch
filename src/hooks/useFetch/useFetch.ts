@@ -3,13 +3,16 @@ import { brawlFetch } from '../../brawlFetch';
 import {
   Action,
   Actions,
+  ErrorResponse,
   FetchBody,
+  FetchError,
   FetchHookOptions,
   FetchHookReturnType,
   FetchOptions,
   FetchParams,
-  ServerError,
-  State
+  State,
+  isAbortError,
+  isErrorResponse
 } from '../../types';
 
 const initialState: State<unknown> = {
@@ -65,14 +68,26 @@ function handleComplete<T>(
 }
 
 function handleError(
-  error: ServerError,
+  error: FetchError,
   options: FetchHookOptions<never>,
   dispatch: React.Dispatch<Action<never>>
 ) {
-  if (error?.name === 'AbortError') return;
+  if (isAbortError(error)) return;
 
-  dispatch({ type: Actions.FETCH_FAILURE, payload: error });
-  options?.onError?.(error);
+  if (isErrorResponse(error)) {
+    dispatch({ type: Actions.FETCH_FAILURE, payload: error });
+    options?.onError?.(error);
+  } else {
+    const uncaughtError: ErrorResponse = {
+      errorCode: 'UNCAUGHT_ERROR',
+      message: 'Uncaught error in useFetch'
+    };
+
+    dispatch({ type: Actions.FETCH_FAILURE, payload: uncaughtError });
+    options?.onError?.(uncaughtError);
+
+    console.warn('Unknown error:', error);
+  }
 }
 
 export function useFetch<T, U = FetchParams, V = FetchBody>(
