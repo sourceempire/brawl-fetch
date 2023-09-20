@@ -3,7 +3,7 @@
 ## Installation
 
 ```bash
-npm install git+git@github.com:sourceempire/brawl-fetch.git#v1.3.1
+npm install git+git@github.com:sourceempire/brawl-fetch.git#v1.3.2
 ```
 
 Note that it might be a good idea to download the latest version
