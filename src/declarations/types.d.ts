@@ -11,9 +11,6 @@ export type FetchOptions<U = FetchParams, V = FetchBody> = {
     body?: V | FormData;
     signal?: AbortSignal;
 };
-export type ServerResponse<T> = {
-    succeeded?: boolean;
-} & T;
 export type FetchHookOptions<T> = {
     onComplete?: (data: T) => void;
     onError?: (error: ErrorResponse) => void;

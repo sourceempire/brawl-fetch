@@ -1,4 +1,4 @@
-import { FetchBody, FetchOptions, FetchParams, ServerResponse } from './types';
+import { FetchBody, FetchOptions, FetchParams } from './types';
 
 function createSearchParams(params: Record<string, string | number | boolean>): URLSearchParams {
   return new URLSearchParams(
@@ -26,23 +26,19 @@ function getDefaultHeaders(isFormData: boolean) {
   return headers;
 }
 
-async function checkStatus<TResponseData>(res: Response) {
+async function checkStatus<TResponseData>(res: Response): Promise<TResponseData> {
   const token = res.headers.get('X-XSRF-TOKEN');
 
   if (token) {
     localStorage.setItem('XSRF-TOKEN', token);
   }
 
-  const body: ServerResponse<TResponseData> = await res.json();
-  const succeeded = body.succeeded;
+  const body: TResponseData = await res.json();
 
-  delete body.succeeded;
-
-  if (res.ok && succeeded) {
-    return body as TResponseData;
+  if (res.ok) {
+    return body;
   } else {
     throw {
-      statusText: res.statusText,
       status: res.status,
       ...body
     };
