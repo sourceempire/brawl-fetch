@@ -5,7 +5,7 @@
   "main": "dist/bundle.js",
   "author": "Source Empire AB",
   "license": "ISC",
-  "types": "src/declarations/index.d.ts",
+  "types": "dist/declarations/index.d.ts",
   "files": [
     "dist"
   ],
