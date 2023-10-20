@@ -6,6 +6,9 @@
   "author": "Source Empire AB",
   "license": "ISC",
   "types": "src/declarations/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "webpack",
     "test": "jest",

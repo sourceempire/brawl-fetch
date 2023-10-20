@@ -1,4 +1,4 @@
 jest.config.js
 webpack.config.js
 
-src/declarations
+dist/declarations

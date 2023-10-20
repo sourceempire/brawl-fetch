@@ -1,1 +1,0 @@
-export { useGetImmediate } from './useGetImmediate';
