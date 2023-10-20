@@ -75,7 +75,7 @@ jobs:
           body: |
             Changes in this release:
             - ...
-          token: ${{ secrets.GH_PKG_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Delete Temporary Branch
         run: |
