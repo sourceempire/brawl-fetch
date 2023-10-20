@@ -1,0 +1,1 @@
+export { useFetchImmediate } from './useFetchImmediate';
