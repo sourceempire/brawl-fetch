@@ -1,5 +1,5 @@
 {
-  "name": "brawl-fetch",
+  "name": "@sourceempire/brawl-fetch",
   "version": "1.4.3",
   "description": "`brawlFetch` is a function that allows you to make HTTP requests, similar to the built-in `fetch` function. However, brawlFetch includes additional functionality to make authorized requests to the server. This includes handling XSRF protection and checking the response status.",
   "main": "dist/bundle.js",
@@ -9,6 +9,10 @@
   "files": [
     "dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/sourceempire/brawl-fetch.git"
+  },
   "scripts": {
     "build": "webpack",
     "test": "jest",
