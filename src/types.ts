@@ -18,6 +18,7 @@ export type FetchOptions<U = FetchParams, V = FetchBody> = {
 export type FetchHookOptions<T> = {
   onComplete?: (data: T) => void;
   onError?: (error: ErrorResponse) => void;
+  immediate?: boolean;
 };
 
 export enum Actions {
@@ -47,12 +48,18 @@ export type Action<T> =
       type: Actions.CLEAR_ERROR;
     };
 
-export type State<T> = {
-  loading: boolean;
-  success: boolean;
-  error: ErrorResponse | null;
-  data: T | null;
-};
+type InitialStateLoadingFalse = { loading: false; requestMade: false; data?: never; error?: never };
+type InitialStateLoadingTrue = { loading: true; requestMade: true; data?: never; error?: never };
+type LoadingState = { loading: true; requestMade: true; error?: never; data?: never };
+type ErrorState = { loading: false; requestMade: true; error: ErrorResponse; data?: never };
+export type SuccessState<T> = { loading: false; requestMade: true; error: null; data: T };
+
+export type State<T> =
+  | InitialStateLoadingFalse
+  | InitialStateLoadingTrue
+  | LoadingState
+  | ErrorState
+  | SuccessState<T>;
 
 export type FetchHookReturnType<T = unknown, U = FetchParams, V = FetchBody> = [
   (options?: FetchOptions<U, V>) => AbortController,

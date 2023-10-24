@@ -43,18 +43,14 @@ describe('useFetch', () => {
     const request = result.current[0];
     const clearError = result.current[1].clearError;
 
-    const expectedAttributes = {
-      clearError,
-      error: null
-    };
+    console.log(result.current[1]);
 
     expect(result.current).toStrictEqual([
       request,
       {
-        ...expectedAttributes,
-        data: null,
+        clearError,
         loading: false,
-        success: false
+        requestMade: false
       }
     ]);
 
@@ -65,10 +61,9 @@ describe('useFetch', () => {
     expect(result.current).toStrictEqual([
       request,
       {
-        ...expectedAttributes,
-        data: null,
+        clearError,
         loading: true,
-        success: false
+        requestMade: true
       }
     ]);
 
@@ -76,10 +71,11 @@ describe('useFetch', () => {
       expect(result.current).toStrictEqual([
         request,
         {
-          ...expectedAttributes,
+          clearError,
           data: expectedData,
           loading: false,
-          success: true
+          error: null,
+          requestMade: true
         }
       ])
     );
@@ -122,11 +118,10 @@ describe('useFetch', () => {
     const clearError = result.current[1].clearError;
 
     const expectedAttributes = {
-      data: null,
       loading: false,
-      success: false,
       clearError,
-      error: expectedError
+      error: expectedError,
+      requestMade: true
     };
 
     act(() => {
@@ -138,6 +133,10 @@ describe('useFetch', () => {
     act(() => {
       clearError();
     });
+
+    if (result.current[1].loading) {
+      return fail('should not be loading');
+    }
 
     expect(result.current[1].error).toBeNull();
   });
