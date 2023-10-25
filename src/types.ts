@@ -21,15 +21,24 @@ export type FetchHookOptions<T> = {
   immediate?: boolean;
 };
 
+export type LazyFetchHookOptions<T> = FetchHookOptions<T> & {
+  immediate?: false;
+};
+
+export type ImmediateFetchHookOptions<T, U = FetchParams, V = FetchBody> = FetchHookOptions<T> & {
+  immediate: true;
+  fetchOptions: FetchOptions<U, V>;
+};
+
 export enum Actions {
   FETCH_INIT,
   FETCH_SUCCESS,
   FETCH_FAILURE,
-  CLEAR_ERROR
+  RESET_STATE
 }
 
-export type Methods = {
-  clearError: () => void;
+export type ActionMethods = {
+  resetState: () => void;
 };
 
 export type Action<T> =
@@ -45,25 +54,19 @@ export type Action<T> =
       payload: ErrorResponse;
     }
   | {
-      type: Actions.CLEAR_ERROR;
+      type: Actions.RESET_STATE;
     };
 
-type InitialStateLoadingFalse = { loading: false; requestMade: false; data?: never; error?: never };
-type InitialStateLoadingTrue = { loading: true; requestMade: true; data?: never; error?: never };
-type LoadingState = { loading: true; requestMade: true; error?: never; data?: never };
-type ErrorState = { loading: false; requestMade: true; error: ErrorResponse; data?: never };
-export type SuccessState<T> = { loading: false; requestMade: true; error: null; data: T };
+export type InitialState = { status: 'initial' };
+export type LoadingState = { status: 'loading' };
+export type ErrorState = { status: 'error'; error: ErrorResponse };
+export type SuccessState<T> = { status: 'success'; data: T };
 
-export type State<T> =
-  | InitialStateLoadingFalse
-  | InitialStateLoadingTrue
-  | LoadingState
-  | ErrorState
-  | SuccessState<T>;
+export type State<T> = InitialState | LoadingState | ErrorState | SuccessState<T>;
 
 export type FetchHookReturnType<T = unknown, U = FetchParams, V = FetchBody> = [
   (options?: FetchOptions<U, V>) => AbortController,
-  State<T> & Methods
+  { state: State<T>; actions: ActionMethods }
 ];
 
 export type ErrorResponse = {

@@ -41,16 +41,17 @@ describe('useFetch', () => {
 
     const { result } = renderHook(() => useFetch<string>('https://example.com'));
     const request = result.current[0];
-    const clearError = result.current[1].clearError;
-
-    console.log(result.current[1]);
+    const resetState = result.current[1].actions.resetState;
 
     expect(result.current).toStrictEqual([
       request,
       {
-        clearError,
-        loading: false,
-        requestMade: false
+        state: {
+          status: 'initial'
+        },
+        actions: {
+          resetState
+        }
       }
     ]);
 
@@ -61,9 +62,12 @@ describe('useFetch', () => {
     expect(result.current).toStrictEqual([
       request,
       {
-        clearError,
-        loading: true,
-        requestMade: true
+        state: {
+          status: 'loading'
+        },
+        actions: {
+          resetState
+        }
       }
     ]);
 
@@ -71,11 +75,13 @@ describe('useFetch', () => {
       expect(result.current).toStrictEqual([
         request,
         {
-          clearError,
-          data: expectedData,
-          loading: false,
-          error: null,
-          requestMade: true
+          state: {
+            status: 'success',
+            data: expectedData
+          },
+          actions: {
+            resetState
+          }
         }
       ])
     );
@@ -115,13 +121,16 @@ describe('useFetch', () => {
     const { result } = renderHook(() => useFetch('https://example.com'));
 
     const request = result.current[0];
-    const clearError = result.current[1].clearError;
+    const resetState = result.current[1].actions.resetState;
 
     const expectedAttributes = {
-      loading: false,
-      clearError,
-      error: expectedError,
-      requestMade: true
+      state: {
+        status: 'error',
+        error: expectedError
+      },
+      actions: {
+        resetState
+      }
     };
 
     act(() => {
@@ -131,14 +140,10 @@ describe('useFetch', () => {
     await waitFor(() => expect(result.current).toStrictEqual([request, expectedAttributes]));
 
     act(() => {
-      clearError();
+      resetState();
     });
 
-    if (result.current[1].loading) {
-      return fail('should not be loading');
-    }
-
-    expect(result.current[1].error).toBeNull();
+    expect(result.current[1].state.status).toBe('initial');
   });
 
   it('should not consider AbortError as an error ', async () => {

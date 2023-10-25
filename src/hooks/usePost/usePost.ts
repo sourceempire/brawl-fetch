@@ -1,16 +1,16 @@
 import { useCallback } from 'react';
 import {
   FetchBody,
-  FetchHookOptions,
   FetchHookReturnType,
   FetchOptions,
-  FetchParams
+  FetchParams,
+  LazyFetchHookOptions
 } from '../../types';
 import { useFetch } from '../useFetch';
 
 export function usePost<T, V = FetchBody, U = FetchParams>(
   url: string,
-  options: FetchHookOptions<T> = {}
+  options: LazyFetchHookOptions<T> = {}
 ): FetchHookReturnType<T, U, V> {
   const [request, state] = useFetch<T, U, V>(url, options);
 

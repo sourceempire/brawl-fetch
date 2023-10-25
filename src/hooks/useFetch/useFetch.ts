@@ -4,44 +4,55 @@ import {
   Action,
   Actions,
   ErrorResponse,
+  ErrorState,
   FetchBody,
   FetchError,
   FetchHookOptions,
   FetchHookReturnType,
   FetchOptions,
   FetchParams,
+  ImmediateFetchHookOptions,
+  InitialState,
+  LazyFetchHookOptions,
+  LoadingState,
   State,
+  SuccessState,
   isAbortError,
   isErrorResponse
 } from '../../types';
 
 function fetchReducer<T>(state: State<T>, action: Action<T>): State<T> {
   switch (action.type) {
-    case Actions.FETCH_INIT:
-      return {
-        loading: true,
-        requestMade: true
+    case Actions.FETCH_INIT: {
+      const state: LoadingState = {
+        status: 'loading'
       };
-    case Actions.FETCH_SUCCESS:
-      return {
-        loading: false,
-        requestMade: true,
-        error: null,
+
+      return state;
+    }
+    case Actions.FETCH_SUCCESS: {
+      const state: SuccessState<T> = {
+        status: 'success',
         data: action.payload
       };
-    case Actions.FETCH_FAILURE:
-      return {
-        loading: false,
-        requestMade: true,
+
+      return state;
+    }
+    case Actions.FETCH_FAILURE: {
+      const state: ErrorState = {
+        status: 'error',
         error: action.payload
       };
-    case Actions.CLEAR_ERROR:
-      return {
-        loading: false,
-        requestMade: true,
-        error: null,
-        data: state.data as T
+
+      return state;
+    }
+    case Actions.RESET_STATE: {
+      const state: InitialState = {
+        status: 'initial'
       };
+
+      return state;
+    }
     default:
       throw new Error();
   }
@@ -76,20 +87,16 @@ function handleError(
 
     dispatch({ type: Actions.FETCH_FAILURE, payload: uncaughtError });
     options?.onError?.(uncaughtError);
-
-    console.warn('Unknown error:', error);
   }
 }
 
 export function useFetch<T, U = FetchParams, V = FetchBody>(
   url: string,
-  options: FetchHookOptions<T> = {}
+  options: LazyFetchHookOptions<T> | ImmediateFetchHookOptions<T, U, V> = {}
 ): FetchHookReturnType<T, U, V> {
   const [state, dispatch] = useReducer<React.Reducer<State<T>, Action<T>>>(
     fetchReducer,
-    options?.immediate
-      ? { loading: true, requestMade: true }
-      : { loading: false, requestMade: false }
+    options?.immediate ? { status: 'loading' } : { status: 'initial' }
   );
 
   const requestUrl = useRef(url);
@@ -124,9 +131,9 @@ export function useFetch<T, U = FetchParams, V = FetchBody>(
     }
   }, [request]);
 
-  const clearError = useCallback(() => {
-    dispatch({ type: Actions.CLEAR_ERROR });
+  const resetState = useCallback(() => {
+    dispatch({ type: Actions.RESET_STATE });
   }, []);
 
-  return [request, { ...state, clearError }];
+  return [request, { state, actions: { resetState } }];
 }

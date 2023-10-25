@@ -1,17 +1,24 @@
 import { useCallback } from 'react';
-import { FetchBody, FetchHookOptions, FetchOptions, FetchParams, State } from '../../types';
+import {
+  ActionMethods,
+  FetchBody,
+  FetchOptions,
+  FetchParams,
+  LazyFetchHookOptions,
+  State
+} from '../../types';
 import { useFetch } from '../useFetch';
 
 type UploadHookReturnType<T = unknown, U = FetchParams, V = FetchBody> = [
   (blob: Blob, options?: FetchOptions<U, V>) => AbortController,
-  State<T>
+  { state: State<T>; actions: ActionMethods }
 ];
 
 export function useUpload<T, U = FetchParams, V = FetchBody>(
   url: string,
-  options: Omit<FetchHookOptions<T>, 'headers' | 'method'> = {}
+  options: Omit<LazyFetchHookOptions<T>, 'headers' | 'method'> = {}
 ): UploadHookReturnType<T, U, V> {
-  const [request, state] = useFetch<T, U, V>(url, options);
+  const [request, { state, actions }] = useFetch<T, U, V>(url, options);
 
   const uploadRequest = useCallback(
     (blob: Blob, fetchOptions?: FetchOptions<U, V>) => {
@@ -32,5 +39,5 @@ export function useUpload<T, U = FetchParams, V = FetchBody>(
     [request]
   );
 
-  return [uploadRequest, state];
+  return [uploadRequest, { state, actions }];
 }
