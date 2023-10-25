@@ -1,5 +1,5 @@
-import { useFetch } from 'hooks/useFetch';
 import { FetchHookOptions, FetchOptions, FetchParams } from '../../types';
+import { useFetch } from '../useFetch';
 
 export type Options<T, U = FetchParams> = FetchHookOptions<T> & {
   fetchOptions: Omit<FetchOptions<U>, 'body' | 'method'>;
