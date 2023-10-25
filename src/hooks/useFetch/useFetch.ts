@@ -127,7 +127,7 @@ export function useFetch<T, U = FetchParams, V = FetchBody>(
 
   useEffect(() => {
     if (optionsRef.current.immediate) {
-      request();
+      request(optionsRef.current.fetchOptions);
     }
   }, [request]);
 
